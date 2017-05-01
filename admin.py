@@ -1,5 +1,3 @@
-# Name: Brandon Gordon
-# Student Number: 10447737
 ############### Information found on .copy() function was found here: http://stackoverflow.com/questions/5244810/python-appending-a-dictionary-to-a-list-i-see-a-pointer-like-behavior ###############
 ############### Information found on truncation without using textwrap.shorten() found here: http://stackoverflow.com/questions/2872512/python-truncate-a-long-string ###############
 
@@ -37,7 +35,7 @@ def formatQuoteAbb(enumerator, quoteText, quoteAuthor, quoteYear):    #This func
     if len(quoteText) > 40:    #If the length of the quote is greater than 40 characters,
         quoteText = quoteText[:40] + "..."    #then cap it at 40 characters and add "...".
     if quoteYear == "u":    #If the year is 'unknown',
-        print(enumerator, ') "', quoteText, '" - ', quoteAuthor, sep='')    #print the statement without reference to the year, or the comma before it.
+        print(enumerator, ') "', quoteText, '" - ', quoteAuthor, sep='')    
     else: print(enumerator, ') "', quoteText, '" - ', quoteAuthor, ', ', quoteYear, sep='')    #If the year is known, print the string like this.
         
 
@@ -46,14 +44,6 @@ def formatQuoteFull(quoteText, quoteAuthor, quoteYear):    #This function format
     if quoteYear == "u":
         print('  - ', quoteAuthor, sep='')
     else: print('  - ', quoteAuthor,', ', quoteYear, sep='')
-
-
-def quoteSearch(searchItem, quoteList):    #This function searches for keywords in quotes as specified.
-    searchItem = searchItem.lower()
-    for quotenum, quoteInfo in enumerate(quoteList, 1):
-        buffer = str(quoteInfo).lower()    #The buffer prints each dictionary entry as a lowercase string to make it easier to search for the values.
-        if searchItem in buffer:
-            formatQuoteAbb(quotenum, quoteInfo['Quote'], quoteInfo['Author'], quoteInfo['Year'])
 
     
 ###############################################################################################################################################################
@@ -98,8 +88,11 @@ while True:    #Enter an endless loop.
 
 
     elif choice == 'S':    #If the user chooses [S]earch. Requirement #5.
-        search = inputSomething("Enter a search term: ")
-        quoteSearch(search, data)    
+        search = inputSomething("Enter a search term: ").lower()
+        for quotenum, quoteInfo in enumerate(data, 1):
+            buffer = str(quoteInfo).lower()    #The buffer prints each dictionary entry as a lowercase string to make it easier to search for the values.
+            if search in buffer:
+                formatQuoteAbb(quotenum, quoteInfo['Quote'], quoteInfo['Author'], quoteInfo['Year'])
 
 
 
