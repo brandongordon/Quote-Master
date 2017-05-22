@@ -1,6 +1,3 @@
-#Name: Brandon Gordon
-#Student Number: 10447737
-
 import tkinter
 import tkinter.messagebox
 import json
