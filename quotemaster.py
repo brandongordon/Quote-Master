@@ -19,21 +19,19 @@ class ProgramGUI:
         except:
             print ("data.txt does not exist!")
             tkinter.messagebox.showerror("Missing File", "data.txt does not exist!")
-            self.main.destroy
+            self.main.destroy()
             print("Program has terminated")
             return
 
         self.authors = set()
         for quoteInfo in self.data:
-            buffer = quoteInfo['Author']
-            self.authors.add(buffer)    #Loops through the data list and stores dictionary items with key "Author" into the buffer, and then adds them to the self.authors set.
+            self.authors.add(quoteInfo['Author'])    #Loops through the data list and stores dictionary items with key "Author" into the buffer, and then adds them to the self.authors set.
         if len(self.authors) < 3:    #Requirement 3.
             tkinter.messagebox.showerror("Insufficient Number of Authors", "At least 3 authors need to exist in the database")
             self.main.destroy()
             print ("Program has terminated")
             return
-        self.authorList = list(self.authors)    #I was sick of working with sets in regards to the random function so I converted it to a list. #SozNotSoz
-
+      
         self.score = 0
         self.questionCount = 0    #Requirement 4.
         
@@ -43,13 +41,13 @@ class ProgramGUI:
         self.bottom = tkinter.Frame(self.main, padx=100, pady=10)
 
         #create and pack content into frames
-        self.whosaid = tkinter.Label(self.top, width=25, text='Who said...', justify='center')
+        self.whoSaid = tkinter.Label(self.top, width=25, text='Who said...', justify='center')
         self.quoteLabel = tkinter.Label(self.middle, wraplength=400, justify='center' )
         self.buttonLeft = tkinter.Button(self.bottom)
         self.buttonMiddle = tkinter.Button(self.bottom)
         self.buttonRight = tkinter.Button(self.bottom)
         
-        self.whosaid.pack()
+        self.whoSaid.pack()
         self.quoteLabel.pack()
         self.buttonLeft.pack(side='left')
         self.buttonMiddle.pack(side='left')
@@ -68,14 +66,12 @@ class ProgramGUI:
     def loadQuote(self):
         self.selectedQuote = random.choice(self.data)    #Select the dictionary entry that we will use for the correct answer
         print ("\nQUOTE INFORMATION BEING TESTED: ", self.selectedQuote)
-        btnAuthors = []
+        self.authors.remove(self.selectedQuote["Author"])    #Remove the chosen quote from self.authors
+        btnAuthors = random.sample(self.authors, 2)    
         btnAuthors.append(self.selectedQuote["Author"])    #Append the correct answer to the list of authors displayed
-        for ortha in self.authorList:
-            if ortha not in btnAuthors:
-                btnAuthors.append(ortha)    #Append 2 more authors at random, making sure they don't already exist in the author list
-        lblQuote = '"' + self.selectedQuote ["Quote"] + '"'
-        btnAuthors = btnAuthors[:3]    #Capping the list at 3 before shuffling to avoid shuffling the correct answer out of the first 3
+        self.authors.add(self.selectedQuote["Author"])    #Add the selected quote back into the pool
         random.shuffle(btnAuthors)
+        lblQuote = '"' + self.selectedQuote ["Quote"] + '"'
         print ("AUTHORS USED IN BUTTONS: ", btnAuthors)
         
         self.quoteLabel.configure(text=lblQuote)
@@ -100,14 +96,5 @@ class ProgramGUI:
 
         self.loadQuote()
 
-        
-        
 
-        
-        # This method is responsible for determining whether the user clicked the correct button and showing a Correct/Incorrect messagebox.
-        # See Point 2 of the "Methods in the GUI Class of quotemaster.py" section of the assignment brief.
-
-
-
-# Create an object of the ProgramGUI class to begin the program.
 gui = ProgramGUI()    #Calling the constructor
